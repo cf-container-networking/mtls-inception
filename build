@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -o pipefail
+set -eu
+
+rm -rf certs
+mkdir -p bin certs
+
+go build -o bin/client ./cmd/client
+go build -o bin/server ./cmd/server
+
+go build -o bin/certstrap github.com/square/certstrap
+
+bin/certstrap --depot-path=certs init \
+  --common-name "ca" \
+  --passphrase '' \
+  --key-bits 2048
+
+bin/certstrap --depot-path=certs request-cert \
+  --common-name "client" \
+  --passphrase '' \
+  --key-bits 2048
+
+bin/certstrap --depot-path=certs sign client --CA ca
+
+bin/certstrap --depot-path=certs request-cert \
+  --common-name "server" \
+  --passphrase '' \
+  --key-bits 2048
+
+bin/certstrap --depot-path=certs sign server --CA ca
+
+bin/client
+bin/server
