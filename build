@@ -19,16 +19,15 @@ bin/certstrap --depot-path=certs init \
 bin/certstrap --depot-path=certs request-cert \
   --common-name "client" \
   --passphrase '' \
-  --key-bits 2048
+  --key-bits 2048 \
+  --ip 127.0.0.1
 
 bin/certstrap --depot-path=certs sign client --CA ca
 
 bin/certstrap --depot-path=certs request-cert \
   --common-name "server" \
   --passphrase '' \
-  --key-bits 2048
+  --key-bits 2048 \
+  --ip 127.0.0.1
 
 bin/certstrap --depot-path=certs sign server --CA ca
-
-bin/client
-bin/server

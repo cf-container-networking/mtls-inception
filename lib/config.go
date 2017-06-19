@@ -1,4 +1,4 @@
-package config
+package lib
 
 import (
 	"crypto/tls"
@@ -8,6 +8,16 @@ import (
 	"fmt"
 	"io/ioutil"
 )
+
+type SocketFlags struct {
+	Address string
+}
+
+// AddFlags will add command line flag for network address
+// The role will be used for the usage text
+func (c *SocketFlags) AddFlags(flagSet *flag.FlagSet, role string) {
+	flagSet.StringVar(&c.Address, "address", "127.0.0.1:7007", role+" address")
+}
 
 type MTLSFlags struct {
 	CAPath   string
