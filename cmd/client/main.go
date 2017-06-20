@@ -13,13 +13,14 @@ import (
 
 func main() {
 	var tlsFlags lib.MTLSFlags
-	tlsFlags.AddFlags(flag.CommandLine, "client")
+	tlsFlags.AddFlags(flag.CommandLine, "client", "ca")
 
-	var socketFlags lib.SocketFlags
-	socketFlags.AddFlags(flag.CommandLine, "remote")
+	var remoteAddr string
+	flag.StringVar(&remoteAddr, "remoteAddr", "127.0.0.21:7021", "remote to connect to (client proxy listener)")
+	flag.Parse()
 
 	var clientAddr string
-	flag.StringVar(&clientAddr, "clientAddr", "127.0.0.1", "local ip address to use when initiating connection to remote server")
+	flag.StringVar(&clientAddr, "clientAddr", "127.0.0.11:0", "local ip address to use when initiating connection to remote server")
 	flag.Parse()
 
 	tlsConfig, err := tlsFlags.LoadConfig()
@@ -33,7 +34,7 @@ func main() {
 	}
 
 	dialer := &net.Dialer{LocalAddr: localAddr}
-	conn, err := tls.DialWithDialer(dialer, "tcp", socketFlags.Address, tlsConfig)
+	conn, err := tls.DialWithDialer(dialer, "tcp", remoteAddr, tlsConfig)
 	if err != nil {
 		log.Fatalf("dial: %s", err)
 	}

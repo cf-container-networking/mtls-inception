@@ -9,6 +9,9 @@ mkdir -p bin certs proxy-certs
 go build -o bin/client ./cmd/client
 go build -o bin/server ./cmd/server
 
+go build -o bin/client-proxy ./cmd/client-proxy
+go build -o bin/server-proxy ./cmd/server-proxy
+
 go build -o bin/certstrap github.com/square/certstrap
 
 
@@ -34,24 +37,24 @@ bin/certstrap --depot-path=certs request-cert \
 
 bin/certstrap --depot-path=certs sign server --CA ca
 
-# ## set up certs for proxies
-bin/certstrap --depot-path=proxy-certs init \
+## set up certs for proxies
+bin/certstrap --depot-path=certs init \
   --common-name "proxy-ca" \
   --passphrase '' \
   --key-bits 2048
 
-bin/certstrap --depot-path=proxy-certs request-cert \
-  --common-name "client-side-proxy" \
+bin/certstrap --depot-path=certs request-cert \
+  --common-name "client-proxy" \
   --passphrase '' \
   --key-bits 2048 \
   --ip 127.0.0.21
 
-bin/certstrap --depot-path=proxy-certs sign client-side-proxy --CA proxy-ca
+bin/certstrap --depot-path=certs sign client-proxy --CA proxy-ca
 
-bin/certstrap --depot-path=proxy-certs request-cert \
-  --common-name "server-side-proxy" \
+bin/certstrap --depot-path=certs request-cert \
+  --common-name "server-proxy" \
   --passphrase '' \
   --key-bits 2048 \
   --ip 127.0.0.22
 
-bin/certstrap --depot-path=proxy-certs sign server-side-proxy --CA proxy-ca
+bin/certstrap --depot-path=certs sign server-proxy --CA proxy-ca

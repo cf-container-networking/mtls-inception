@@ -9,16 +9,6 @@ import (
 	"io/ioutil"
 )
 
-type SocketFlags struct {
-	Address string
-}
-
-// AddFlags will add command line flag for network address
-// The role will be used for the usage text
-func (c *SocketFlags) AddFlags(flagSet *flag.FlagSet, role string) {
-	flagSet.StringVar(&c.Address, "address", "127.0.0.1:7007", role+" address")
-}
-
 type MTLSFlags struct {
 	CAPath   string
 	KeyPath  string
@@ -27,8 +17,8 @@ type MTLSFlags struct {
 
 // AddFlags will add command line flags for CA, Key and Cert to the given flagset
 // The role will be used to name the default values and set the usage text
-func (c *MTLSFlags) AddFlags(flagSet *flag.FlagSet, role string) {
-	flagSet.StringVar(&c.CAPath, "ca", "certs/ca.crt", "path to CA certificate")
+func (c *MTLSFlags) AddFlags(flagSet *flag.FlagSet, role, caName string) {
+	flagSet.StringVar(&c.CAPath, "ca", "certs/"+caName+".crt", "path to CA certificate")
 	flagSet.StringVar(&c.KeyPath, "key", "certs/"+role+".key", "path to "+role+" key")
 	flagSet.StringVar(&c.CertPath, "cert", "certs/"+role+".crt", "path to "+role+" certificate")
 }
