@@ -3,14 +3,16 @@
 set -o pipefail
 set -eu
 
-rm -rf certs
-mkdir -p bin certs
+rm -rf certs proxy-certs
+mkdir -p bin certs proxy-certs
 
 go build -o bin/client ./cmd/client
 go build -o bin/server ./cmd/server
 
 go build -o bin/certstrap github.com/square/certstrap
 
+
+## set up certs for endpoints
 bin/certstrap --depot-path=certs init \
   --common-name "ca" \
   --passphrase '' \
@@ -20,7 +22,7 @@ bin/certstrap --depot-path=certs request-cert \
   --common-name "client" \
   --passphrase '' \
   --key-bits 2048 \
-  --ip 127.0.0.1
+  --ip 127.0.0.11
 
 bin/certstrap --depot-path=certs sign client --CA ca
 
@@ -28,6 +30,28 @@ bin/certstrap --depot-path=certs request-cert \
   --common-name "server" \
   --passphrase '' \
   --key-bits 2048 \
-  --ip 127.0.0.1
+  --ip 127.0.0.12
 
 bin/certstrap --depot-path=certs sign server --CA ca
+
+# ## set up certs for proxies
+bin/certstrap --depot-path=proxy-certs init \
+  --common-name "proxy-ca" \
+  --passphrase '' \
+  --key-bits 2048
+
+bin/certstrap --depot-path=proxy-certs request-cert \
+  --common-name "client-side-proxy" \
+  --passphrase '' \
+  --key-bits 2048 \
+  --ip 127.0.0.21
+
+bin/certstrap --depot-path=proxy-certs sign client-side-proxy --CA proxy-ca
+
+bin/certstrap --depot-path=proxy-certs request-cert \
+  --common-name "server-side-proxy" \
+  --passphrase '' \
+  --key-bits 2048 \
+  --ip 127.0.0.22
+
+bin/certstrap --depot-path=proxy-certs sign server-side-proxy --CA proxy-ca
