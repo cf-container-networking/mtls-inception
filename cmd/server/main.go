@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync/atomic"
 
-	"github.com/rosenhouse/tls-tunnel-experiments/lib"
+	"github.com/cf-container-networking/tls-tunnel-experiments/lib"
 )
 
 func main() {
