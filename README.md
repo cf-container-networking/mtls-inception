@@ -1,8 +1,7 @@
 # mtls inception!
 
-
-Here we show that apps can use in mutual TLS (MTLS) even if their traffic is tunneled through
-client-side and server-side sidecar proxies using their own (outer) MTLS connection.
+Here we show that apps can use mutual TLS (MTLS) even if their traffic is tunneled through
+client-side and server-side sidecar proxies that are using their own (outer) MTLS connection.
 
 In other words, it's MTLS-inside-MTLS.
 
