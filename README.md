@@ -1,7 +1,12 @@
 # mtls inception!
 
-The purpose of this repo is to show that apps can still engage in mutual tls even if traffic is proxied through client-side and server-side sidecars communicating via their own mutual-tls connection.
-This shows that mutual tls can be tunneled through another mutual tls connection.
+
+Here we show that apps can use in mutual TLS (MTLS) even if their traffic is tunneled through
+client-side and server-side sidecar proxies using their own (outer) MTLS connection.
+
+In other words, it's MTLS-inside-MTLS.
+
+![](diagram.png)
 
 To see this in actions, run the following steps in 4 windows
 
