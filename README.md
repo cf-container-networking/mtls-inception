@@ -21,7 +21,7 @@ docker exec -it $container_handle /bin/bash
 
 then from window 1:
 ```
-cd /go/src/github.com/rosenhouse/tls-tunnel-experiments/
+cd /go/src/github.com/cf-container-networking/mtls-inception/
 ./build
 
 bin/server
@@ -29,21 +29,21 @@ bin/server
 
 window 2:
 ```
-cd /go/src/github.com/rosenhouse/tls-tunnel-experiments/
+cd /go/src/github.com/cf-container-networking/mtls-inception/
 
 bin/server-proxy
 ```
 
 window 3:
 ```
-cd /go/src/github.com/rosenhouse/tls-tunnel-experiments/
+cd /go/src/github.com/cf-container-networking/mtls-inception/
 
 bin/client-proxy
 ```
 
 and from window 4:
 ```
-cd /go/src/github.com/rosenhouse/tls-tunnel-experiments/
+cd /go/src/github.com/cf-container-networking/mtls-inception/
 echo "127.0.0.21    server" >> /etc/hosts
 
 echo "hello" | bin/client -address server:7021
